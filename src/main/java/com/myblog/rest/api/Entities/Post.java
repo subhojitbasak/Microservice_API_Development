@@ -6,6 +6,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Data
 @NoArgsConstructor
@@ -27,6 +29,12 @@ public class Post {
     @Lob
     @Column(name = "content", nullable = false)
     private String content;
+
+    // cascade used to provide -> changes in parent class will also reflect in child class too
+    //orphan is used to provide -> when its parent table is deleted then its child also deleted.e.g. if a video has
+    //multiple comments once the video gets deleted its all comments should all deleted.
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL,orphanRemoval = true)
+    Set<Comment> comments = new HashSet<>();
 
 
 
